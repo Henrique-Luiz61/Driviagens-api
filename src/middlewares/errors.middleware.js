@@ -10,5 +10,5 @@ export default function errorsMiddleware(err, req, res, next) {
   if (err.type === "conflict")
     return res.status(httpStatus.CONFLICT).send(err.message);
 
-  res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+  res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.detail);
 }
