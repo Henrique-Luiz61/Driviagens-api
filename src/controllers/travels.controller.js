@@ -9,8 +9,17 @@ async function postFlight(req, res) {
   res.status(httpStatus.CREATED).send(flight.rows[0]);
 }
 
+async function postTravel(req, res) {
+  const { passengerId, flightId } = req.body;
+
+  const travel = await travelsService.createTravel(passengerId, flightId);
+
+  res.status(httpStatus.CREATED).send(travel.rows[0]);
+}
+
 const travelsController = {
   postFlight,
+  postTravel,
 };
 
 export default travelsController;

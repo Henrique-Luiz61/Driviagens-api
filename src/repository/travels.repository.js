@@ -16,9 +16,28 @@ async function createFlightDB(origin, destination, date) {
   );
 }
 
+async function findPassengerFlightIdsDB(passengerId, flightId) {
+  return db.query(
+    `SELECT passengers.id AS "passengerId", flights.id AS "flightId" 
+        FROM passengers
+     JOIN flights ON passengers.id = $1 AND flights.id = $2;`,
+    [passengerId, flightId]
+  );
+}
+
+async function createTravelDB(passengerId, flightId) {
+  return db.query(
+    `INSERT INTO travels ("passengerId", "flightId")
+      VALUES ($1, $2) RETURNING *;`,
+    [passengerId, flightId]
+  );
+}
+
 const travelsRepository = {
   findCitiesByIdsDB,
   createFlightDB,
+  findPassengerFlightIdsDB,
+  createTravelDB,
 };
 
 export default travelsRepository;
