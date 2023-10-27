@@ -4,7 +4,7 @@ export default function errorsMiddleware(err, req, res, next) {
   if (err.type === "notFound")
     return res.status(httpStatus.NOT_FOUND).send(err.message);
 
-  if (err.type === "incompleteData")
+  if (err.type === "unprocessableEntity")
     return res.status(httpStatus.UNPROCESSABLE_ENTITY).send(err.message);
 
   if (err.type === "conflict")
