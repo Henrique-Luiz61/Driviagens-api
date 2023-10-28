@@ -10,7 +10,7 @@ travelsRouter.post(
   validateSchema(flightSchema),
   travelsController.postFlight
 );
-travelsRouter.get("/flights");
+travelsRouter.get("/flights", travelsController.getFlights);
 travelsRouter.post(
   "/travels",
   validateSchema(travelSchema),

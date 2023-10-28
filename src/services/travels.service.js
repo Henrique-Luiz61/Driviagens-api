@@ -36,9 +36,29 @@ async function createTravel(passengerId, flightId) {
   return result;
 }
 
+async function getFlights(origin, destination) {
+  let result = {};
+
+  if (origin) {
+    result = await travelsRepository.findFlightsOriginDB(origin);
+  } else if (destination) {
+    result = await travelsRepository.findFlightsDestinationDB(destination);
+  } else if (origin && destination) {
+    result = await travelsRepository.findOriginDestinationDB(
+      origin,
+      destination
+    );
+  } else {
+    result = await travelsRepository.findFlightsDB();
+  }
+
+  return result;
+}
+
 const travelsService = {
   createFlight,
   createTravel,
+  getFlights,
 };
 
 export default travelsService;

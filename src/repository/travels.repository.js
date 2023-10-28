@@ -33,11 +33,65 @@ async function createTravelDB(passengerId, flightId) {
   );
 }
 
+async function findFlightsDB() {
+  return db.query(
+    `SELECT flights.id, c1.name AS origin, c2.name AS destination, 
+            TO_CHAR(flights.date, 'YYYY-MM-DD') AS date
+      FROM flights
+      JOIN cities c1 ON flights.origin = c1.id
+      JOIN cities c2 ON flights.destination = c2.id 
+      ORDER BY flights.date;`
+  );
+}
+
+async function findFlightsOriginDB(origin) {
+  return db.query(
+    `SELECT flights.id, c1.name AS origin, c2.name AS destination,
+            TO_CHAR(flights.date, 'YYYY-MM-DD') AS date
+      FROM flights
+        JOIN cities c1 ON flights.origin = c1.id
+        JOIN cities c2 ON flights.destination = c2.id
+        WHERE c1.name = ($1)
+        ORDER BY flights.date;`,
+    [origin]
+  );
+}
+
+async function findFlightsDestinationDB(destination) {
+  return db.query(
+    `SELECT flights.id, c1.name AS origin, c2.name AS destination,
+            TO_CHAR(flights.date, 'YYYY-MM-DD') AS date
+      FROM flights
+        JOIN cities c1 ON flights.origin = c1.id
+        JOIN cities c2 ON flights.destination = c2.id
+        WHERE c2.name = ($1)
+        ORDER BY flights.date;`,
+    [destination]
+  );
+}
+
+async function findOriginDestinationDB(origin, destination) {
+  return db.query(
+    `SELECT flights.id, c1.name AS origin, c2.name AS destination,
+            TO_CHAR(flights.date, 'YYYY-MM-DD') AS date
+      FROM flights
+        JOIN cities c1 ON flights.origin = c1.id
+        JOIN cities c2 ON flights.destination = c2.id
+        WHERE c1.name = ($1) AND c2.name = ($2)
+        ORDER BY flights.date;`,
+    [origin, destination]
+  );
+}
+
 const travelsRepository = {
   findCitiesByIdsDB,
-  createFlightDB,
   findPassengerFlightIdsDB,
   createTravelDB,
+  createFlightDB,
+  findFlightsDB,
+  findFlightsOriginDB,
+  findFlightsDestinationDB,
+  findOriginDestinationDB,
 };
 
 export default travelsRepository;
