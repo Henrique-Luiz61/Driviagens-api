@@ -18,7 +18,11 @@ async function createFlight(origin, destination, date) {
   const diffDays = dayjs(formatDate).diff(dayjs().format("YYYY-MM-DD"), "day");
   if (diffDays <= 0) throw unprocessableError("date");
 
-  const result = travelsRepository.createFlightDB(origin, destination, date);
+  const result = travelsRepository.createFlightDB(
+    origin,
+    destination,
+    formatDate
+  );
 
   return result;
 }
@@ -39,9 +43,9 @@ async function createTravel(passengerId, flightId) {
 async function getFlights(origin, destination) {
   let result = {};
 
-  if (origin) {
+  if (origin && !destination) {
     result = await travelsRepository.findFlightsOriginDB(origin);
-  } else if (destination) {
+  } else if (destination && !origin) {
     result = await travelsRepository.findFlightsDestinationDB(destination);
   } else if (origin && destination) {
     result = await travelsRepository.findOriginDestinationDB(

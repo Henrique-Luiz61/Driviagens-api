@@ -12,8 +12,16 @@ async function postPassenger(req, res) {
   res.status(httpStatus.CREATED).send(passenger.rows[0]);
 }
 
+async function getPassengerTravels(req, res) {
+  const { name } = req.query;
+
+  const travels = await passengersService.getPassengerTravels(name);
+  res.send(travels.rows);
+}
+
 const passengersController = {
   postPassenger,
+  getPassengerTravels,
 };
 
 export default passengersController;

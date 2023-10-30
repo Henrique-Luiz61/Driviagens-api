@@ -17,8 +17,21 @@ async function createPassenger(firstName, lastName) {
   return result;
 }
 
+async function getPassengerTravels(name) {
+  let result = {};
+
+  if (name) {
+    result = await passengersRepository.findPassengerTravelsNameDB(name);
+  } else {
+    result = await passengersRepository.findPassengerTravelsDB(name);
+  }
+
+  return result;
+}
+
 const passengersService = {
   createPassenger,
+  getPassengerTravels,
 };
 
 export default passengersService;
